@@ -29,3 +29,6 @@ logging:
     org.hibernate:
       SQL: debug
       type.descriptor.sql: trace
+
+jwt:
+  secret: Y29kZS1ib2tpLnRpc3RvcnkuY29t
