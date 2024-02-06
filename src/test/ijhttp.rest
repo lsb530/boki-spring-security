@@ -4,7 +4,6 @@ Accept: application/json
 Content-Type: application/json
 
 {
-
 }
 
 ### SignUp Failed - 2
@@ -68,3 +67,13 @@ Content-Type: application/json
     "loginId": "boki",
     "password": "qwer1234!@"
 }
+
+> {%
+    client.global.set('accessToken', response.body.accessToken)
+%}
+
+### MyInfo
+@id=1
+GET {{server}}/info/{{id}}
+Accept: application/json
+Authorization: Bearer {{accessToken}}

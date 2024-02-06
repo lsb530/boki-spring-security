@@ -2,8 +2,10 @@ package com.boki.bokispringsecurity.member.entity
 
 import com.boki.bokispringsecurity.common.status.Gender
 import com.boki.bokispringsecurity.common.status.ROLE
+import com.boki.bokispringsecurity.member.dto.MemberDtoResponse
 import jakarta.persistence.*
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Entity
 @Table(
@@ -35,6 +37,12 @@ class Member(
 ) {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
     val memberRole: List<MemberRole>? = null
+
+    private fun LocalDate.formatDate(): String =
+        this.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+
+    fun toDto(): MemberDtoResponse =
+        MemberDtoResponse(id!!, loginId, name, birthDate.formatDate(), gender.desc, email)
 }
 
 @Entity
