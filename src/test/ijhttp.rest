@@ -1,0 +1,50 @@
+### SignUp Failed - 1
+POST {{server}}/signup
+Accept: application/json
+Content-Type: application/json
+
+{
+
+}
+
+### SignUp Failed - 2
+POST {{server}}/signup
+Accept: application/json
+Content-Type: application/json
+
+{
+    "loginId": "boki",
+    "password": "1",
+    "name": "이승복",
+    "birthDate": "1992-05-30",
+    "gender": "MAN",
+    "email": "lsb530@naver.com"
+}
+
+### SignUp Success
+POST {{server}}/signup
+Accept: application/json
+Content-Type: application/json
+
+{
+    "loginId": "boki",
+    "password": "qwer1234!@",
+    "name": "이승복",
+    "birthDate": "1992-05-30",
+    "gender": "MAN",
+    "email": "lsb530@naver.com"
+}
+
+### SignUp Failed - Duplicated
+POST {{server}}/signup
+Accept: application/json
+Content-Type: application/json
+
+{
+    "loginId": "boki",
+    "password": "qwer1234!@",
+    "name": "이승복",
+    "birthDate": "1992-05-30",
+    "gender": "MAN",
+    "email": "lsb530@naver.com"
+}

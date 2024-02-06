@@ -2,6 +2,7 @@ package com.boki.bokispringsecurity.member.dto
 
 import com.boki.bokispringsecurity.common.annotation.ValidEnum
 import com.boki.bokispringsecurity.common.status.Gender
+import com.boki.bokispringsecurity.member.entity.Member
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
@@ -63,4 +64,7 @@ data class MemberDtoRequest(
 
     private fun String.toLocalDate(): LocalDate =
         LocalDate.parse(this, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+    fun toEntity(): Member =
+        Member(id, loginId, password, name, birthDate, gender, email)
 }
