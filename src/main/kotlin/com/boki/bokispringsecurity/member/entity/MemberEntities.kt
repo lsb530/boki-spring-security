@@ -20,7 +20,7 @@ class Member(
     val loginId: String,
 
     @Column(nullable = false, length = 100)
-    val password: String,
+    var password: String,
 
     @Column(nullable = false, length = 10)
     val name: String,

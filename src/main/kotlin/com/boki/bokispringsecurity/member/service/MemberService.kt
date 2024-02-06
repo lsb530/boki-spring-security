@@ -14,6 +14,7 @@ import com.boki.bokispringsecurity.member.repository.MemberRoleRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -24,6 +25,7 @@ class MemberService(
     private val memberRoleRepository: MemberRoleRepository,
     private val authenticationManagerBuilder: AuthenticationManagerBuilder,
     private val jwtTokenProvider: JwtTokenProvider,
+    private val passwordEncoder: PasswordEncoder,
 ) {
     /**
      * 회원가입
@@ -35,6 +37,10 @@ class MemberService(
         }
 
         member = memberDtoRequest.toEntity()
+        member.apply {
+            password = passwordEncoder.encode(password)
+        }
+
         memberRepository.save(member)
 
         val memberRole = MemberRole(role = ROLE.MEMBER, member = member)
