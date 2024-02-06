@@ -72,7 +72,22 @@ Content-Type: application/json
     client.global.set('access_token', response.body.data.accessToken)
 %}
 
-### MyInfo
+### Get MyInfo
 GET {{server}}/info
 Accept: application/json
 Authorization: Bearer {{access_token}}
+
+### Update MyInfo
+PUT {{server}}/info
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+    "loginId": "boki",
+    "password": "qwer1234!@",
+    "name": "이승복2",
+    "birthDate": "2000-05-30",
+    "gender": "MAN",
+    "email": "lsb530@naver.com"
+}
