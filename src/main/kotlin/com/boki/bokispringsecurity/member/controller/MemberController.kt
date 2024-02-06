@@ -2,13 +2,14 @@ package com.boki.bokispringsecurity.member.controller
 
 import com.boki.bokispringsecurity.common.authority.TokenInfo
 import com.boki.bokispringsecurity.common.dto.BaseResponse
+import com.boki.bokispringsecurity.common.dto.CustomUser
 import com.boki.bokispringsecurity.member.dto.LoginDto
 import com.boki.bokispringsecurity.member.dto.MemberDtoRequest
 import com.boki.bokispringsecurity.member.dto.MemberDtoResponse
 import com.boki.bokispringsecurity.member.service.MemberService
 import jakarta.validation.Valid
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -38,9 +39,11 @@ class MemberController(
     /**
      * 내 정보 보기
      */
-    @GetMapping("/info/{id}")
-    fun searchMyInfo(@PathVariable id: Long): BaseResponse<MemberDtoResponse> {
-        val response = memberService.searchMyInfo(id)
+    @GetMapping("/info")
+    fun searchMyInfo(): BaseResponse<MemberDtoResponse> {
+        val userId = (SecurityContextHolder.getContext().authentication.principal as CustomUser).userId
+        println(userId)
+        val response = memberService.searchMyInfo(userId)
         return BaseResponse(data = response)
     }
 }

@@ -1,9 +1,9 @@
 package com.boki.bokispringsecurity.common.service
 
+import com.boki.bokispringsecurity.common.dto.CustomUser
 import com.boki.bokispringsecurity.member.entity.Member
 import com.boki.bokispringsecurity.member.repository.MemberRepository
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -20,7 +20,8 @@ class CustomUserDetailService(
             ?.let { createUserDetails(it) } ?: throw UsernameNotFoundException("해당 유저는 없습니다.")
 
     private fun createUserDetails(member: Member): UserDetails =
-        User(
+        CustomUser(
+            member.id!!,
             member.loginId,
             passwordEncoder.encode(member.password),
             member.memberRole!!.map { SimpleGrantedAuthority("ROLE_${it.role}") }

@@ -69,11 +69,10 @@ Content-Type: application/json
 }
 
 > {%
-    client.global.set('accessToken', response.body.accessToken)
+    client.global.set('access_token', response.body.data.accessToken)
 %}
 
 ### MyInfo
-@id=1
-GET {{server}}/info/{{id}}
+GET {{server}}/info
 Accept: application/json
-Authorization: Bearer {{accessToken}}
+Authorization: Bearer {{access_token}}
