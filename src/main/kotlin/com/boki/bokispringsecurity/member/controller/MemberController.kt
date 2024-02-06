@@ -1,6 +1,8 @@
 package com.boki.bokispringsecurity.member.controller
 
+import com.boki.bokispringsecurity.common.authority.TokenInfo
 import com.boki.bokispringsecurity.common.dto.BaseResponse
+import com.boki.bokispringsecurity.member.dto.LoginDto
 import com.boki.bokispringsecurity.member.dto.MemberDtoRequest
 import com.boki.bokispringsecurity.member.service.MemberService
 import jakarta.validation.Valid
@@ -19,5 +21,14 @@ class MemberController(
     fun signUp(@RequestBody @Valid memberDtoRequest: MemberDtoRequest): BaseResponse<Unit> {
         val resultMsg: String = memberService.signUp(memberDtoRequest)
         return BaseResponse(message = resultMsg)
+    }
+
+    /**
+     * 로그인
+     */
+    @PostMapping("/login")
+    fun login(@RequestBody @Valid loginDto: LoginDto): BaseResponse<TokenInfo> {
+        val tokenInfo = memberService.login(loginDto)
+        return BaseResponse(data = tokenInfo)
     }
 }

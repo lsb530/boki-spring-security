@@ -31,4 +31,4 @@ logging:
       type.descriptor.sql: trace
 
 jwt:
-  secret: Y29kZS1ib2tpLnRpc3RvcnkuY29t
+  secret: aHR0cHM6Ly9jb2RlLWJva2kudGlzdG9yeS5jb20vZ3Vlc3Rib29r

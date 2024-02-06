@@ -48,3 +48,23 @@ Content-Type: application/json
     "gender": "MAN",
     "email": "lsb530@naver.com"
 }
+
+### Login Failed
+POST {{server}}/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "loginId": "boki",
+    "password": "qwer1234"
+}
+
+### Login Success
+POST {{server}}/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "loginId": "boki",
+    "password": "qwer1234!@"
+}

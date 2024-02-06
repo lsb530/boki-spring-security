@@ -17,7 +17,7 @@ import java.util.*
 const val EXPIRATION_MILLISECONDS: Long = 1000 * 60 * 30
 @Component
 class JwtTokenProvider {
-    @Value("\${jwt.secret")
+    @Value("\${jwt.secret}")
     lateinit var secretKey: String
 
     private val key by lazy { Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey)) }
@@ -86,5 +86,6 @@ class JwtTokenProvider {
     }
 
     private fun getClaims(token: String): Claims =
-        Jwts.parser().setSigningKey(key).build().parseClaimsJws(token).body
+        Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).body
+//        Jwts.parser().setSigningKey(key).build().parseClaimsJws(token).body
 }

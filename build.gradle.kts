@@ -20,7 +20,8 @@ repositories {
     mavenCentral()
 }
 
-val jwtVersion = "0.12.5"
+//val jwtVersion = "0.12.5"
+val jwtVersion = "0.11.5"
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
