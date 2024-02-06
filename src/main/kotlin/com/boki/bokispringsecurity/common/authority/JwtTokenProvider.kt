@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 import java.util.*
+import kotlin.reflect.full.memberProperties
 
 const val EXPIRATION_MILLISECONDS: Long = 1000 * 60 * 30
 @Component
@@ -21,6 +22,7 @@ class JwtTokenProvider {
     lateinit var secretKey: String
 
     private val key by lazy { Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey)) }
+    private fun Authentication.toClaims() = this::class.memberProperties.associate { it.name to it.getter.call(this) }
 
     /**
      * Token 생성
@@ -33,15 +35,27 @@ class JwtTokenProvider {
         val now = Date()
         val accessExpiration = Date(now.time + EXPIRATION_MILLISECONDS)
 
+        /* jjwt version: 0.11.5 */
+//        val accessToken = Jwts
+//            .builder()
+//            .setSubject(authentication.name)
+//            .claim("auth", authorities)
+//            .claim("userId", (authentication.principal as CustomUser).userId)
+//            .setIssuedAt(now)
+//            .setExpiration(accessExpiration)
+//            .signWith(key, SignatureAlgorithm.HS256)
+//            .compact()
+
+        /* jjwt version: 0.12.5 */
         // Access Token
         val accessToken = Jwts
             .builder()
-            .setSubject(authentication.name)
+            .subject(authentication.name)
             .claim("auth", authorities)
             .claim("userId", (authentication.principal as CustomUser).userId)
-            .setIssuedAt(now)
-            .setExpiration(accessExpiration)
-            .signWith(key, SignatureAlgorithm.HS256)
+            .issuer("boki")
+            .expiration(accessExpiration)
+            .signWith(key)
             .compact()
 
         return TokenInfo("Bearer", accessToken)
@@ -88,6 +102,9 @@ class JwtTokenProvider {
     }
 
     private fun getClaims(token: String): Claims =
-        Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).body
-//        Jwts.parser().setSigningKey(key).build().parseClaimsJws(token).body
+        /* jjwt version: 0.11.5 */
+//        Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).body
+
+        /* jjwt version: 0.12.5 */
+        Jwts.parser().verifyWith(key).build().parseSignedClaims(token).payload
 }
