@@ -3,6 +3,7 @@ package com.boki.bokispringsecurity.member.entity
 import com.boki.bokispringsecurity.common.status.Gender
 import com.boki.bokispringsecurity.common.status.ROLE
 import com.boki.bokispringsecurity.member.dto.MemberDtoResponse
+import com.boki.bokispringsecurity.post.entity.Post
 import jakarta.persistence.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -37,6 +38,9 @@ class Member(
 ) {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
     val memberRole: List<MemberRole>? = null
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    val posts: List<Post>? = null
 
     private fun LocalDate.formatDate(): String =
         this.format(DateTimeFormatter.ofPattern("yyyyMMdd"))

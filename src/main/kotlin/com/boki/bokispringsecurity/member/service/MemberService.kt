@@ -2,6 +2,7 @@ package com.boki.bokispringsecurity.member.service
 
 import com.boki.bokispringsecurity.common.authority.JwtTokenProvider
 import com.boki.bokispringsecurity.common.authority.TokenInfo
+import com.boki.bokispringsecurity.common.dto.CustomUser
 import com.boki.bokispringsecurity.common.exception.InvalidInputException
 import com.boki.bokispringsecurity.common.status.ROLE
 import com.boki.bokispringsecurity.member.dto.LoginDto
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -63,6 +65,17 @@ class MemberService(
 
         memberRepository.save(staff)
         memberRoleRepository.save(staffRole)
+    }
+
+    /**
+     * 로그인된 회원 정보 반환
+     */
+    fun me(): Member {
+        val authentication = SecurityContextHolder.getContext().authentication
+        val userId = (authentication.principal as CustomUser).userId
+        val member: Member =
+            memberRepository.findByIdOrNull(userId) ?: throw InvalidInputException("userId", "회원번호($userId)가 존재하지 않는 유저입니다.")
+        return member
     }
 
     /**

@@ -58,7 +58,35 @@ Content-Type: application/json
     "password": "qwer1234"
 }
 
-### Login Success
+### Login Success with Admin
+POST {{server}}/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "loginId": "admin",
+    "password": "admin"
+}
+
+> {%
+    client.global.set('access_token', response.body.data.accessToken)
+%}
+
+### Login Success with Staff
+POST {{server}}/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "loginId": "staff",
+    "password": "staff"
+}
+
+> {%
+    client.global.set('access_token', response.body.data.accessToken)
+%}
+
+### Login Success with Member
 POST {{server}}/login
 Accept: application/json
 Content-Type: application/json
@@ -91,3 +119,28 @@ Authorization: Bearer {{access_token}}
     "gender": "MAN",
     "email": "lsb530@naver.com"
 }
+
+### Create Post
+POST {{server}}/posts
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+    "title": "점심고민",
+    "content": "보통 점심때 뭐 먹나요?"
+}
+
+### Get Posts - Failed
+GET {{server}}/posts
+Accept: application/json
+
+### Get Posts - Success(Only Admin)
+GET {{server}}/posts
+Accept: application/json
+Authorization: Bearer {{access_token}}
+
+### Get Post
+@postId = 1
+GET {{server}}/posts/{{postId}}
+Accept: application/json
+Authorization: Bearer {{access_token}}
