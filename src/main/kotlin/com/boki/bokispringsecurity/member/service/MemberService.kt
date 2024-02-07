@@ -11,6 +11,7 @@ import com.boki.bokispringsecurity.member.entity.Member
 import com.boki.bokispringsecurity.member.entity.MemberRole
 import com.boki.bokispringsecurity.member.repository.MemberRepository
 import com.boki.bokispringsecurity.member.repository.MemberRoleRepository
+import org.springframework.context.annotation.Bean
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -27,6 +28,43 @@ class MemberService(
     private val jwtTokenProvider: JwtTokenProvider,
     private val passwordEncoder: PasswordEncoder,
 ) {
+    @Bean
+    fun createInitUsers() {
+        val adminReq = MemberDtoRequest(
+            id = null,
+            _loginId = "admin",
+            _password = "admin",
+            _name = "admin",
+            _birthDate = "1992-05-30",
+            _email = "admin@test.com",
+            _gender = "MAN"
+        )
+        val admin = adminReq.toEntity().apply {
+            password = passwordEncoder.encode(password)
+        }
+        val adminRole = MemberRole(role = ROLE.ADMIN, member = admin)
+
+        val staffReq = MemberDtoRequest(
+            id = null,
+            _loginId = "staff",
+            _password = "staff",
+            _name = "staff",
+            _birthDate = "1992-05-30",
+            _email = "staff@test.com",
+            _gender = "WOMAN"
+        )
+        val staff = staffReq.toEntity().apply {
+            password = passwordEncoder.encode(password)
+        }
+        val staffRole = MemberRole(role = ROLE.STAFF, member = staff)
+
+        memberRepository.save(admin)
+        memberRoleRepository.save(adminRole)
+
+        memberRepository.save(staff)
+        memberRoleRepository.save(staffRole)
+    }
+
     /**
      * 회원가입
      */
@@ -63,7 +101,8 @@ class MemberService(
      * 내 정보 조회
      */
     fun searchMyInfo(id: Long): MemberDtoResponse {
-        val member: Member = memberRepository.findByIdOrNull(id) ?: throw InvalidInputException("id", "회원번호($id)가 존재하지 않는 유저입니다.")
+        val member: Member =
+            memberRepository.findByIdOrNull(id) ?: throw InvalidInputException("id", "회원번호($id)가 존재하지 않는 유저입니다.")
         return member.toDto()
     }
 
