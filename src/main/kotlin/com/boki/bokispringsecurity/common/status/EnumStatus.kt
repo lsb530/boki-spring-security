@@ -11,5 +11,14 @@ enum class ResultCode(val msg: String) {
 }
 
 enum class ROLE {
-    MEMBER
+    MEMBER,
+    STAFF,
+    ADMIN,
+}
+
+enum class PRIVILEGE {
+    READ,
+    WRITE,
+    UPDATE,
+    DELETE,
 }
