@@ -7,6 +7,7 @@ import com.boki.bokispringsecurity.post.dto.PostReadRes
 import com.boki.bokispringsecurity.post.service.PostService
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -45,5 +46,12 @@ class PostController(
         return BaseResponse(data = post)
     }
 
+//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('DELETE')")
+    @DeleteMapping("/{id}")
+    fun deletePost(@PathVariable id: Long): BaseResponse<Unit> {
+        val message = postService.deletePost(id)
+        return BaseResponse(message = message)
+    }
 
 }
