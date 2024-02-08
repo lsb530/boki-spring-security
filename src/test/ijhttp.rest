@@ -144,3 +144,9 @@ Authorization: Bearer {{access_token}}
 GET {{server}}/posts/{{postId}}
 Accept: application/json
 Authorization: Bearer {{access_token}}
+
+
+### Delete Post
+DELETE {{server}}/posts/{{postId}}
+Accept: application/json
+Authorization: Bearer {{access_token}}

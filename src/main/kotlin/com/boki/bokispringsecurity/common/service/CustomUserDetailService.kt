@@ -17,11 +17,16 @@ class CustomUserDetailService(
         memberRepository.findByLoginId(username)
             ?.let { createUserDetails(it) } ?: throw UsernameNotFoundException("해당 유저는 없습니다.")
 
-    private fun createUserDetails(member: Member): UserDetails =
-        CustomUser(
+    private fun createUserDetails(member: Member): UserDetails {
+        val authorities = member.roles.map { role ->
+            SimpleGrantedAuthority("ROLE_${role.name}")
+        }.toSet()
+
+        return CustomUser(
             member.id!!,
             member.loginId,
             member.password,
-            member.memberRole!!.map { SimpleGrantedAuthority("ROLE_${it.role}") }
+            authorities
         )
+    }
 }

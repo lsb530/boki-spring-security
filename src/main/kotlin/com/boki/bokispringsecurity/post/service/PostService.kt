@@ -19,7 +19,9 @@ class PostService(
      * 글 생성
      */
     fun creatPost(createPostReq: PostCreateReq): String {
-        val post = createPostReq.toEntity(memberService.me())
+        val author = memberService.me()
+        val post = createPostReq.toEntity(author)
+        author.posts.add(post)
         postRepository.save(post)
         return "글이 작성되었습니다."
     }
@@ -37,5 +39,14 @@ class PostService(
     fun getPost(id: Long): PostReadRes {
         val post = postRepository.findByIdOrNull(id) ?: throw InvalidInputException("id", "글 번호($id)가 존재하지 않습니다.")
         return post.toDto()
+    }
+
+    /**
+     * 글 삭제
+     */
+    fun deletePost(id: Long): String {
+        val post = postRepository.findByIdOrNull(id) ?: throw InvalidInputException("id", "글 번호($id)가 존재하지 않습니다.")
+        postRepository.delete(post)
+        return "글 번호($id)가 삭제되었습니다."
     }
 }

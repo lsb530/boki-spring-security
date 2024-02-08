@@ -3,6 +3,7 @@ package com.boki.bokispringsecurity.member.dto
 import com.boki.bokispringsecurity.common.annotation.ValidEnum
 import com.boki.bokispringsecurity.common.status.Gender
 import com.boki.bokispringsecurity.member.entity.Member
+import com.boki.bokispringsecurity.post.dto.PostReadRes
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
@@ -92,4 +93,5 @@ data class MemberDtoResponse(
     val birthDate: String,
     val gender: String,
     val email: String,
+    val posts: List<PostReadRes>
 )
