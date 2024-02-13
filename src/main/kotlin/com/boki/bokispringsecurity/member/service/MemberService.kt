@@ -25,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
+import java.time.Period
 
 @Transactional
 @Service
@@ -91,6 +92,11 @@ class MemberService(
         return member
     }
 
+    fun isAdult(member: Member): Boolean {
+        val age = Period.between(member.birthDate, LocalDate.now()).years
+        return age >= 20
+    }
+
     /**
      * 회원가입
      */
@@ -132,6 +138,13 @@ class MemberService(
             memberRepository.findByIdOrNull(id) ?: throw InvalidInputException("id", "회원번호($id)가 존재하지 않는 유저입니다.")
         return member.toDto()
     }
+
+    fun getMember(id: Long): Member {
+        val member: Member =
+            memberRepository.findByIdOrNull(id) ?: throw InvalidInputException("id", "회원번호($id)가 존재하지 않는 유저입니다.")
+        return member
+    }
+
 
     /**
      * 내 정보 수정

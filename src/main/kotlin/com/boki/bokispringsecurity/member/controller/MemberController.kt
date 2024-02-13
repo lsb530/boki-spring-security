@@ -10,6 +10,7 @@ import com.boki.bokispringsecurity.member.service.MemberService
 import jakarta.validation.Valid
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -56,5 +57,11 @@ class MemberController(
         memberDtoRequest.id = userId
         val resultMsg = memberService.saveMyInfo(memberDtoRequest)
         return BaseResponse(message = resultMsg)
+    }
+
+    @GetMapping("/adult/member/{id}")
+    fun isAdult(@PathVariable id: Long): BaseResponse<Any> {
+        val adult = memberService.isAdult(memberService.getMember(id))
+        return BaseResponse(data = mapOf("isAdult" to adult))
     }
 }

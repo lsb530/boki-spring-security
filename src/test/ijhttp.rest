@@ -29,7 +29,7 @@ Content-Type: application/json
     "loginId": "boki",
     "password": "qwer1234!@",
     "name": "이승복",
-    "birthDate": "1992-05-30",
+    "birthDate": "2010-05-30",
     "gender": "MAN",
     "email": "lsb530@naver.com"
 }
@@ -148,5 +148,10 @@ Authorization: Bearer {{access_token}}
 
 ### Delete Post
 DELETE {{server}}/posts/{{postId}}
+Accept: application/json
+Authorization: Bearer {{access_token}}
+
+###
+GET http://localhost:8080/adult/member/3
 Accept: application/json
 Authorization: Bearer {{access_token}}
